@@ -59,13 +59,13 @@ class Handler extends Controller {
 
 		// Increase memory limit, cause some images require a lot to resize
 		ini_set('memory_limit', '128M');
-
-		// Build a new image using fetched image data
-		$image = new Image(
-			$this->storage->readSrc($path), 
-			$this->url->phpThumbConfig($options)
-		);
 		try {
+			// Build a new image using fetched image data
+			$image = new Image(
+				$this->storage->readSrc($path), 
+				$this->url->phpThumbConfig($options)
+			);
+		
 			// Process the image and write its data to disk
 			$this->storage->writeCrop($crop_path, 
 				$image->process($width, $height, $options)->get()

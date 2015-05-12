@@ -65,11 +65,15 @@ class Handler extends Controller {
 			$this->storage->readSrc($path), 
 			$this->url->phpThumbConfig($options)
 		);
-		
-		// Process the image and write its data to disk
-		$this->storage->writeCrop($crop_path, 
-			$image->process($width, $height, $options)->get()
-		);
+		try {
+			// Process the image and write its data to disk
+			$this->storage->writeCrop($crop_path, 
+				$image->process($width, $height, $options)->get()
+			);
+		}
+		catch(Exception $e) {
+			// Do nothing
+		}
 
 		// Redirect to remote crops ... 
 		if ($remote_crops) {

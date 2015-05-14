@@ -58,7 +58,7 @@ class Handler extends Controller {
 		if ($this->storage->tooManyCrops($path)) throw new Exception('Croppa: Max crops');
 
 		// Increase memory limit, cause some images require a lot to resize
-		ini_set('memory_limit', '128M');
+		ini_set('memory_limit', '256M');
 		try {
 			// Build a new image using fetched image data
 			$image = new Image(

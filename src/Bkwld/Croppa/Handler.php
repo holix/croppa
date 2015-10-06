@@ -58,18 +58,22 @@ class Handler extends Controller {
 		if ($this->storage->tooManyCrops($path)) throw new Exception('Croppa: Max crops');
 
 		// Increase memory limit, cause some images require a lot to resize
-		ini_set('memory_limit', '128M');
-
-		// Build a new image using fetched image data
-		$image = new Image(
-			$this->storage->readSrc($path), 
-			$this->url->phpThumbConfig($options)
-		);
+		ini_set('memory_limit', '256M');
+		try {
+			// Build a new image using fetched image data
+			$image = new Image(
+				$this->storage->readSrc($path), 
+				$this->url->phpThumbConfig($options)
+			);
 		
-		// Process the image and write its data to disk
-		$this->storage->writeCrop($crop_path, 
-			$image->process($width, $height, $options)->get()
-		);
+			// Process the image and write its data to disk
+			$this->storage->writeCrop($crop_path, 
+				$image->process($width, $height, $options)->get()
+			);
+		}
+		catch(Exception $e) {
+			// Do nothing
+		}
 
 		// Redirect to remote crops ... 
 		if ($remote_crops) {
